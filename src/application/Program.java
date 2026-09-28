@@ -31,14 +31,12 @@ public class Program {
                 checkIn = sdf.parse(sc.nextLine());
                 System.out.println("Qual é a data de check-out (dd/MM/yyyy)?");
                 checkOut = sdf.parse(sc.nextLine());
-                Date now = new Date();
-                if (checkIn.before(now) || checkOut.before(now)) {
-                    System.out.println("Erro: A data de check-in não pode ser anterior à data atual.");
-                } else if (!checkOut.after(checkIn)){
-                    System.out.println("Erro: A data de check-out deve ser posterior à data de check-in.");
+
+               String erro = reserva.atualizarDatas(checkIn, checkOut);
+                if (erro != null) {
+                    System.out.println("Erro ao atualizar reserva: " + erro);
                 } else {
-                    reserva.atualizarDatas(checkIn, checkOut);
-                    System.out.println("Reserva criada: " + reserva);
+                    System.out.println("Reserva atualizada: " + reserva);
                 }
             }
             // Aqui você pode adicionar a lógica para ler os dados da reserva

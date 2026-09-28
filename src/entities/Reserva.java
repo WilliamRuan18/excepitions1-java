@@ -54,15 +54,17 @@ public class Reserva {
         }
     }
 
-    public void atualizarDatas(Date checkIn, Date checkOut) {
-        try {
-            this.checkIn = checkIn;
-            this.checkOut = checkOut;
+    public String atualizarDatas(Date checkIn, Date checkOut) {
+        Date now = new Date();
+        if (checkIn.before(now) || checkOut.before(now)) {
+            return "Erro: A data de check-in não pode ser anterior à data atual.";
         }
-        catch (Exception e) {
-            System.out.println("Erro ao atualizar as datas da reserva: " + e.getMessage());
+        if (!checkOut.after(checkIn)){
+            return "Erro: A data de check-out deve ser posterior à data de check-in.";
         }
-
+        this.checkIn = checkIn;
+        this.checkOut = checkOut;
+        return null; // Retorna null se não houver erros
     }
 
     @Override
