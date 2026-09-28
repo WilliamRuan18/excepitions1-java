@@ -1,8 +1,11 @@
 package entities;
 
+import model.exceptions.DomainException;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
+
 
 public class Reserva {
     private Integer numeroDoQuarto;
@@ -15,6 +18,9 @@ public class Reserva {
     }
 
     public Reserva(Integer numeroDoQuarto, Date checkIn, Date checkOut) {
+        if (!checkOut.after(checkIn)){
+            throw new DomainException("A data de check-out deve ser posterior à data de check-in.");
+        }
         this.numeroDoQuarto = numeroDoQuarto;
         this.checkIn = checkIn;
         this.checkOut = checkOut;
@@ -54,17 +60,16 @@ public class Reserva {
         }
     }
 
-    public String atualizarDatas(Date checkIn, Date checkOut) {
+    public void atualizarDatas(Date checkIn, Date checkOut) {
         Date now = new Date();
         if (checkIn.before(now) || checkOut.before(now)) {
-            return "Erro: A data de check-in não pode ser anterior à data atual.";
+            throw new DomainException("As datas de check-in e check-out devem ser futuras.");
         }
         if (!checkOut.after(checkIn)){
-            return "Erro: A data de check-out deve ser posterior à data de check-in.";
+            throw new DomainException("A data de check-out deve ser posterior à data de check-in.");
         }
         this.checkIn = checkIn;
         this.checkOut = checkOut;
-        return null; // Retorna null se não houver erros
     }
 
     @Override
